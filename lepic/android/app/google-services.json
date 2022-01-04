@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1098302583986",
+    "project_id": "lepic-b4ff7",
+    "storage_bucket": "lepic-b4ff7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098302583986:android:af5af174f4bc79e17cc5ab",
+        "android_client_info": {
+          "package_name": "com.fcba.lepic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098302583986-68potdvfl45c39hv6fdcjf9go6stmsvr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkBkY8KujypiQQASlnEA6w5P-2vzY7zu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098302583986-68potdvfl45c39hv6fdcjf9go6stmsvr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
