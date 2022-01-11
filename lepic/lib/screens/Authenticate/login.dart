@@ -1,4 +1,5 @@
 import 'package:lepic/screens/Student/HomePageStudent.dart';
+import 'package:lepic/screens/SupportTeam/Support.dart';
 import 'package:lepic/screens/Teacher/HomePageTeacher.dart';
 import 'package:lepic/screens/products.dart';
 import 'package:lepic/services/auth_service.dart';
@@ -148,10 +149,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterPage()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Support()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
