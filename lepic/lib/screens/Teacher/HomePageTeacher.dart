@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lepic/screens/Teacher/AddTextToClass.dart';
 import 'package:lepic/screens/Teacher/AllReport.dart';
@@ -56,20 +57,28 @@ class _TeacherHomePage extends State<TeacherHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DropdownButton(
-              value: _currentClass,
-              isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down),
-              items: classes.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
+            SizedBox(height: 20.0),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('products')
+                  .where('teacherName', isEqualTo: todo)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return ListView(
+                  shrinkWrap: true,
+                  children: snapshot.data.docs.map((document) {
+                    return Container(
+                      child: Center(child: Text(document['name'])),
+                    );
+                  }).toList(),
                 );
-              }).toList(),
-              onChanged: (String newValue) {
-                setState(() {
-                  _currentClass = newValue;
-                });
               },
             ),
           ],
