@@ -221,7 +221,7 @@ class _TeacherHomePage extends State<TeacherHomePage> {
                 }
               },
             ),
-            const Padding(padding: EdgeInsets.only(top: 10.0)),
+            /*const Padding(padding: EdgeInsets.only(top: 10.0)),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(
@@ -237,7 +237,7 @@ class _TeacherHomePage extends State<TeacherHomePage> {
                     MaterialPageRoute(
                         builder: (context) => AllReportTeacher()));
               },
-            ),
+            ),*/
           ],
         ),
       ),
