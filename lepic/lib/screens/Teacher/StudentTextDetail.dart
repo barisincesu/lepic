@@ -46,7 +46,7 @@ class StudentTextDetail extends StatelessWidget {
                 List<String> grades = [];
                 for (int i = 0; i < snapshot.data.docs.length; i++) {
                   DocumentSnapshot snap = snapshot.data.docs[i];
-                  for (var j = 0; j < 4; j++) {
+                  for (var j = 0; j <= 4; j++) {
                     grades.add(snap.get('grade')[j].toString());
                   }
                 }
