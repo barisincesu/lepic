@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lepic/screens/Student/CompleteText.dart';
 import 'package:lepic/screens/Student/MyReportsStudent.dart';
@@ -16,6 +17,12 @@ class HomePageStudent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final todo = ModalRoute.of(context).settings.arguments; // ismi aldık.
+    String class_name = "5A";
+    if (todo == "cihan@test.com") {
+      class_name = "6A";
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -25,40 +32,72 @@ class HomePageStudent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    tileColor: Colors.grey,
-                    textColor: Colors.white,
-                    title: Text(studentName),
-                    subtitle: Text(studentClass),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('Person')
+                  .where('userName', isEqualTo: todo)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                }),
-            const Padding(padding: EdgeInsets.only(top: 10.0)),
-            const Text("Incompleted Texts"),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: incompleteTitle.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(incompleteTitle[index]),
-                    subtitle:
-                        Text(incompleteTexts[index].substring(0, 20) + "..."),
-                    trailing: const Icon(Icons.not_started),
-                    onTap: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CompleteText(),
-                            settings: RouteSettings(
-                              arguments: incompleteTexts[index],
-                            ),
-                          ))
-                    },
+                }
+                List<String> textsInClass = [];
+                for (int i = 0; i < snapshot.data.docs.length; i++) {
+                  DocumentSnapshot snap = snapshot.data.docs[i];
+
+                  class_name = snap.get('group');
+                  break;
+                }
+
+                return Text("Your Class : " + class_name);
+              },
+            ),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('Sentence')
+                  .where('group', isEqualTo: class_name)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                }),
+                }
+                List<String> textsInClass = [];
+                List<String> titleInClass = [];
+                for (int i = 0; i < snapshot.data.docs.length; i++) {
+                  DocumentSnapshot snap = snapshot.data.docs[i];
+                  textsInClass.add(snap.get('content'));
+                  titleInClass.add(snap.get('title'));
+                }
+
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: titleInClass.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(titleInClass[index]),
+                        subtitle:
+                            Text(textsInClass[index].substring(0, 20) + "..."),
+                        trailing: const Icon(Icons.not_started),
+                        onTap: () => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CompleteText(),
+                                settings: RouteSettings(
+                                  arguments: textsInClass[index],
+                                ),
+                              ))
+                        },
+                      );
+                    });
+              },
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(
@@ -74,7 +113,7 @@ class HomePageStudent extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => MyReportsStudent(),
                       settings: RouteSettings(
-                        arguments: studentName,
+                        arguments: todo,
                       ),
                     ));
               },

@@ -48,7 +48,7 @@ class _TeacherHomePage extends State<TeacherHomePage> {
             SizedBox(height: 20.0),
             StreamBuilder(
               stream: FirebaseFirestore.instance
-                  .collection('products')
+                  .collection('Group')
                   .where('teacherName', isEqualTo: todo)
                   .snapshots(),
               builder: (BuildContext context,
@@ -64,10 +64,10 @@ class _TeacherHomePage extends State<TeacherHomePage> {
                   currencyItems.add(
                     DropdownMenuItem(
                       child: Text(
-                        snap.get('name'),
+                        snap.get('groupName'),
                         style: TextStyle(color: Color(0xff11b719)),
                       ),
-                      value: "${snap.get('name')}",
+                      value: "${snap.get('groupName')}",
                     ),
                   );
                 }
@@ -235,7 +235,11 @@ class _TeacherHomePage extends State<TeacherHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AllReportTeacher()));
+                      builder: (context) => AllReportTeacher(),
+                      settings: RouteSettings(
+                        arguments: selectedCurrency,
+                      ),
+                    ));
               },
             ),*/
           ],

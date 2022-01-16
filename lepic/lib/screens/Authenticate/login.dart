@@ -108,7 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                           .signIn(
                               _emailController.text, _passwordController.text)
                           .then((value) {
-                        if (_emailController.text[0] == "t") {
+                        if (_emailController.text[0] == "t" &&
+                            _emailController.text[1] == "-") {
                           return Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -121,7 +122,11 @@ class _LoginPageState extends State<LoginPage> {
                           return Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePageStudent()));
+                                builder: (context) => HomePageStudent(),
+                                settings: RouteSettings(
+                                  arguments: _emailController.text,
+                                ),
+                              ));
                         }
                       });
                     },

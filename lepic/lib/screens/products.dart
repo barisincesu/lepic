@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lepic/screens/edit_product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,33 +6,37 @@ import '../models/product.dart';
 class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final todo = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("geeksforgeeks"),
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('products')
-            .where('teacherName', isEqualTo: todo)
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+    final products = Provider.of<List<Product>>(context);
 
-          return ListView(
-            children: snapshot.data.docs.map((document) {
-              return Container(
-                child: Center(child: Text(document['name'])),
-              );
-            }).toList(),
-          );
-        },
-      ),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Products'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.add,
+                size: 30.0,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => EditProduct()));
+              },
+            )
+          ],
+        ),
+        body: (products != null)
+            ? ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(products[index].name),
+                    trailing: Text(products[index].price.toString()),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EditProduct(products[index])));
+                    },
+                  );
+                })
+            : Center(child: CircularProgressIndicator()));
   }
 }
